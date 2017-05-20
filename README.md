@@ -1,5 +1,5 @@
-## ODM2 presentations
-### Conda channel
+## PyCon 2017 talk
+### conda-forge
 
 Rendered versions:
 
