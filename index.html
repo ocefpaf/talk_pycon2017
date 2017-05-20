@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="reveal.js/css/reveal.css">
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #2a211c; color: #bdae9d; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; background-color: #2a211c; color: #bdae9d; border-right: 1px solid #bdae9d; }
+td.sourceCode { padding-left: 5px; }
+pre, code { color: #bdae9d; background-color: #2a211c; }
+code > span.kw { color: #43a8ed; font-weight: bold; } /* Keyword */
+code > span.dt { text-decoration: underline; } /* DataType */
+code > span.dv { color: #44aa43; } /* DecVal */
+code > span.bn { color: #44aa43; } /* BaseN */
+code > span.fl { color: #44aa43; } /* Float */
+code > span.ch { color: #049b0a; } /* Char */
+code > span.st { color: #049b0a; } /* String */
+code > span.co { color: #0066ff; font-style: italic; } /* Comment */
+code > span.al { color: #ffff00; } /* Alert */
+code > span.fu { color: #ff9358; font-weight: bold; } /* Function */
+code > span.er { color: #ffff00; font-weight: bold; } /* Error */
+code > span.wa { color: #ffff00; font-weight: bold; } /* Warning */
+code > span.cn { } /* Constant */
+code > span.sc { color: #049b0a; } /* SpecialChar */
+code > span.vs { color: #049b0a; } /* VerbatimString */
+code > span.ss { color: #049b0a; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { } /* Variable */
+code > span.cf { color: #43a8ed; font-weight: bold; } /* ControlFlow */
+code > span.op { } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { font-weight: bold; } /* Preprocessor */
+code > span.at { } /* Attribute */
+code > span.do { color: #0066ff; font-style: italic; } /* Documentation */
+code > span.an { color: #0066ff; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.co { color: #0066ff; font-weight: bold; font-style: italic; } /* Comment */
+code > span.in { color: #0066ff; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <link rel="stylesheet" href="reveal.js/css/theme/black.css" id="theme">
+  <link rel="stylesheet" href="slides.css"/>
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'reveal.js/css/print/pdf.css' : 'reveal.js/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="reveal.js/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+
+<section id="community-powered-packaging-conda-forge" class="slide level1">
+<h1>Community powered packaging: <strong>conda-forge</strong></h1>
+<aside class="notes">
+<p>Show of hands</p>
+<p>who uses conda?</p>
+<p>knows about conda-forge?</p>
+contributed to conda-forge?
+</aside>
+</section>
+<section id="whoami" class="slide level1">
+<h1>$ whoami?</h1>
+<ul>
+<li>Filipe Fernandes</li>
+<li>twitter, GitHub, etc: <a href="(https://github.com/ocefpaf)">ocefpaf</a></li>
+</ul>
+<aside class="notes">
+<p>Not a developer</p>
+<p>I am a Physical Oceanographer</p>
+I am a scientist who code (not a data scientist!)
+</aside>
+</section>
+<section id="what-i-do" class="slide level1">
+<h1>What I do?</h1>
+<figure>
+<img src="images/dsc_4390.jpg" />
+</figure>
+<aside class="notes">
+<p>Physical Oceanographers like to throw electronic instruments into the salt water</p>
+We hope the instrument comes back with good data
+</aside>
+</section>
+<section id="ioos" class="slide level1">
+<h1>IOOS</h1>
+<figure>
+<img src="images/io_0002s_0003_layer10copy3_med.jpg" />
+</figure>
+<aside class="notes">
+<p>Aside: a little about what I do</p>
+<p>I work for the Integrated Ocean Observing System (IOOS for short)</p>
+IOOS splits the USA coastal areas into smaller regions
+</aside>
+</section>
+<section id="ioos-1" class="slide level1">
+<h1>IOOS</h1>
+<figure>
+<img src="images/ioos_bythe_numbers_graphic2_feb2017-2.png" />
+</figure>
+<aside class="notes">
+<p>17 Federal partners and 11 regional associations</p>
+<p>The partners are Universities, private companies, individuals</p>
+<p>All collecting and sharing oceanographic data</p>
+<p>netCDF files, HDF4/5, csv, and many other obscure data formats Not to mention that data access protocols!</p>
+You all can imagine the kind problem we have here: Software deployment!
+</aside>
+</section>
+<section id="the-problem" class="slide level1">
+<h1>The Problem</h1>
+<p>The <strong>scientific</strong> Python community always wanted a</p>
+<ul>
+<li class="fragment"><strong>cross-platform</strong> package manager</li>
+<li class="fragment">that <strong>does not</strong> require elevated privileges</li>
+<li class="fragment">handles <strong>all</strong> types of packages</li>
+<li class="fragment">including compiled Python packages and <strong>non-Python</strong> packages</li>
+<li class="fragment">and generally lets Python be the awesome <strong>scientific</strong> toolbox of choice.</li>
+</ul>
+<aside class="notes">
+<p>The IOOS community problem</p>
+Other community also face similar issues
+</aside>
+</section>
+<section id="history" class="slide level1">
+<h1>History</h1>
+<h2 id="pip-before-wheels">pip before wheels</h2>
+<figure>
+<img src="images/sandro_botticelli-la_carte_de_lenfer.jpg" />
+</figure>
+<aside class="notes">
+<p>Pretty much hell</p>
+<p>Only pure python packages were easy to install</p>
+<p>Fortran, C/C++, Cython extensions were always challenging</p>
+<p>We had to apt-get/brew install before pip installing anything</p>
+Windows users suffered the most
+</aside>
+</section>
+<section id="history-1" class="slide level1">
+<h1>History</h1>
+<h2 id="distributions">distributions</h2>
+<figure>
+<img src="images/straight-from-the-forge.jpg" alt="EPD, Anaconda, Pythonxy, ActivePython, etc" /><figcaption>EPD, Anaconda, Pythonxy, ActivePython, etc</figcaption>
+</figure>
+<aside class="notes">
+<p>Slightly better, but anything that was not pre-packaged was still hard</p>
+In some cases even harder than with pip+system Python alone
+</aside>
+</section>
+<section id="history-2" class="slide level1">
+<h1>History</h1>
+<h2 id="conda-and-the-various-3rd-party-channels">conda and the various 3rd party channels</h2>
+<figure>
+<img src="images/papa_smurf.gif" />
+</figure>
+<aside class="notes">
+<p>Experts could create their own distribution and share in a channel</p>
+<p>Novice and intermediate users were often confused with the high number of channels</p>
+<p>Wrong metadata permeated some channels: wrong version</p>
+At this stage some communities started to form: scitools (UK MetOffice), IOOS, bioconda, omnia, etc.
+</aside>
+</section>
+<section id="history-3" class="slide level1">
+<h1>History</h1>
+<h2 id="pip-after-wheels">pip after wheels</h2>
+<figure>
+<img src="images/600px-adams_creation_sistine_chapel_ceiling_by_michelangelo_jbu33cut.jpg" />
+</figure>
+<aside class="notes">
+<p>The situation is much better now with pip</p>
+<p>Developers can upload binaries to PyPI</p>
+<p>Users can just pip install <package></p>
+And everything works!
+</aside>
+</section>
+<section id="we-are-happy-right" class="slide level1">
+<h1>We are happy, right!?</h1>
+<div class="fragment">
+<figure>
+<img src="images/pip_install_gdal.jpg" />
+</figure>
+<aside class="notes">
+<p>Not so much :-(</p>
+<p>PyPI is a place were the packages are uploaded, but it is very hard to find information on how they where built</p>
+<p>Many packages have flags and switches</p>
+Some developers don't want to maintain the binaries
+</aside>
+</div>
+</section>
+<section id="packaging-is-not-easy" class="slide level1">
+<h1>Packaging is not easy</h1>
+<ul>
+<li class="fragment">We still have trouble installing packages in our machines</li>
+<li class="fragment">Worse when the packages use <code>ctypes</code> to access an odd dependencies,</li>
+<li class="fragment">or has a compilation step: <code>cython</code>, <code>C</code>/<code>C++</code>, or <code>Fortran</code> extension</li>
+<li class="fragment">Windows!? <code>vcvarsall.bat</code>!!!</li>
+</ul>
+<div class="fragment">
+<p>(╯°□°）╯︵ ┻━┻</p>
+</div>
+</section>
+<section id="what-is-a-conda" class="slide level1">
+<h1>What is a conda?</h1>
+<ul>
+<li class="fragment">An open-source packaging system developed for, and used by, the scientific software community.</li>
+<li class="fragment">From their own webpage:</li>
+<li class="fragment">&quot;Package Everything!&quot;</li>
+<li class="fragment">&quot;And share your repositories with clients or colleagues.&quot;</li>
+</ul>
+</section>
+<section id="why-conda" class="slide level1">
+<h1>Why conda?</h1>
+<ul>
+<li class="fragment">Why not <code>apt-get</code>, <code>yum</code>, <code>chocolatey</code>, or <code>brew</code>?</li>
+<li class="fragment">Why not pip and wheels?</li>
+</ul>
+<aside class="notes">
+<p>It would be virtually impossible to do the with native package managers on all systems</p>
+<p>pip relies on PyPI as a platform to publish the packages</p>
+We need a platform to manage (GitHub), Build, (CIs), and publish (anaconda.org)
+</aside>
+</section>
+<section id="what-is-a-conda-channel" class="slide level1">
+<h1>What is a conda channel?</h1>
+<ul>
+<li class="fragment">Is similar to a Linux repository (or app store)</li>
+<li class="fragment">The service is hosted for free at Continuum's Anaconda Cloud</li>
+<li class="fragment">We can upload pre-compiled binaries using the <code>conda</code> package manager</li>
+</ul>
+</section>
+<section id="packaging-is-hard-and-you-should-not-do-it-alone" class="slide level1">
+<h1>Packaging is hard and you should not do it alone!</h1>
+<figure>
+<img src="images/papa_smurf_dance.gif" />
+</figure>
+<aside class="notes">
+<p>conda-forge solution is to aggregate as many as we can find</p>
+<p>and use the power of the community</p>
+that is the only solution that scales
+</aside>
+</section>
+<section id="how-is-conda-forge-different-from-any-other-3rd-party-channel" class="slide level1">
+<h1>How is conda-forge different from any other 3rd party channel?</h1>
+<ul>
+<li class="fragment">It is a community led collection of <strong>recipes</strong>,</li>
+<li class="fragment">build <strong>infrastructure</strong>,</li>
+<li class="fragment">and packages for the <strong>conda</strong> package manager.</li>
+</ul>
+<aside class="notes">
+<p>defaults does not scale to the community demands</p>
+<p>cloud infrastructure</p>
+<p>not a distribution</p>
+<p>continuum had a single community repository</p>
+no builds and did not scales
+</aside>
+</section>
+<section id="conda-forge" class="slide level1">
+<h1>conda-forge</h1>
+<figure>
+<img src="images/lotr-one-ring-to-rule-them-all-one-channel-to-rule-them-all-conda-forge.jpg" />
+</figure>
+<aside class="notes">
+recipe fragmentation
+</aside>
+</section>
+<section id="recipes-0" class="slide level1">
+<h1>Recipes 0</h1>
+<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">package:</span>
+  <span class="fu">name:</span><span class="at"> pandas</span>
+  <span class="fu">version:</span><span class="at"> </span><span class="kw">{</span>{ version <span class="kw">}</span><span class="at">}</span>
+<span class="fu">source:</span>
+  <span class="fu">url:</span><span class="at"> https://github.com/pydata/pandas/archive/v{{ version }}.tar.gz</span>
+  <span class="fu">sha256:</span><span class="at"> d9f67bb17f334ad395e01b2339c3756f3e0d0240cb94c094ef711bbfc5c56c80</span>
+<span class="fu">build:</span>
+  <span class="fu">number:</span><span class="at"> 0</span>
+  <span class="fu">script:</span><span class="at"> python setup.py install --single-version-externally-managed --record=record.txt</span></code></pre></div>
+<aside class="notes">
+RPM specfile
+</aside>
+</section>
+<section id="recipes-1" class="slide level1">
+<h1>Recipes 1</h1>
+<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">about:</span>
+  <span class="fu">home:</span><span class="at"> http://pandas.pydata.org</span>
+  <span class="fu">license:</span><span class="at"> BSD 3-clause</span>
+  <span class="fu">summary:</span><span class="at"> </span><span class="st">&#39;High-performance, easy-to-use data structures and data analysis tools.&#39;</span>
+<span class="fu">extra:</span>
+  <span class="fu">recipe-maintainers:</span>
+    <span class="kw">-</span> jreback
+    <span class="kw">-</span> jorisvandenbossche
+    <span class="kw">-</span> TomAugspurger</code></pre></div>
+</section>
+<section id="infrastructure" class="slide level1">
+<h1>Infrastructure</h1>
+<ul>
+<li class="fragment">The recipes are hosted on <a href="https://github.com/conda-forge">GitHub</a></li>
+<li class="fragment"><a href="http://www.appveyor.com/">AppVeyor</a> ➛ Windows</li>
+<li class="fragment"><a href="https://travis-ci.org/">Travis-CI</a> ➛ OSX</li>
+<li class="fragment"><a href="https://github.com/conda-forge/docker-images">CircleCI+Docker</a> ➛ Linux</li>
+</ul>
+<aside class="notes">
+<p>The choice was straight forward</p>
+<p>AppVeyor provides Win32/64 and all MSVCs (Python 2.7, 3.4, 3.5/3.6 vc9, vc10, vc14)</p>
+<p>With Travis-CI we are stuck with the X-code image they provide</p>
+On Linux we have 100% of freedom via a docker image
+</aside>
+</section>
+<section id="the-community-by-numbers" class="slide level1">
+<h1>The community by numbers</h1>
+<h2 id="outdate-daily">outdate daily</h2>
+<ul>
+<li class="fragment">458 people</li>
+<li class="fragment">2,456 teams</li>
+<li class="fragment">2,461 repositories</li>
+</ul>
+</section>
+<section id="how-to-use-the-channel" class="slide level1">
+<h1>How to use the channel?</h1>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">conda</span> config --add channels conda-forge
+
+<span class="ex">conda</span> install gdal -c conda-forge</code></pre></div>
+</section>
+<section id="how-to-help-the-community" class="slide level1">
+<h1>How to help the community?</h1>
+<ul>
+<li class="fragment">reporting issues</li>
+<li class="fragment">updating existing packages</li>
+<li class="fragment">adding new packages</li>
+<li class="fragment">reviewing new recipes</li>
+</ul>
+</section>
+<section id="reporting-issues" class="slide level1">
+<h1>Reporting Issues</h1>
+<figure>
+<img src="images/github_issues.png" />
+</figure>
+</section>
+<section id="updating-a-recipe" class="slide level1">
+<h1>Updating a recipe</h1>
+<figure>
+<img src="images/github_maintaince.png" />
+</figure>
+</section>
+<section id="adding-new-packages" class="slide level1">
+<h1>Adding new packages</h1>
+<h2 id="everything-starts-with-a-pr">everything starts with a PR</h2>
+<ul>
+<li class="fragment">The point of entry is <a href="https://github.com/conda-forge/staged-recipes">staged-recipes</a></li>
+<li class="fragment">Once the PR is accepted a GitHub team is created based on the maintainers list</li>
+<li class="fragment">The maintainers have commit rights only to their own recipes</li>
+</ul>
+</section>
+<section id="staged-recipes-pr" class="slide level1">
+<h1>staged-recipes PR</h1>
+<figure>
+<img src="images/staged-recipes.png" />
+</figure>
+</section>
+<section id="what-is-a-feedstock" class="slide level1">
+<h1>What is a feedstock?</h1>
+<ul>
+<li class="fragment">The new package lives in the <a href="https://github.com/conda-forge/dose-feedstock">feedstock</a></li>
+<li class="fragment">This Repository, CI configuration, team permissions are automatically created</li>
+<li class="fragment">The tooling lives in <a href="https://github.com/conda-forge/conda-smithy">conda-smithy</a></li>
+</ul>
+</section>
+<section id="reviewing-recipes" class="slide level1">
+<h1>Reviewing recipes</h1>
+<ul>
+<li class="fragment">not everything can be automated</li>
+<li class="fragment">it is one of the most human-time demanding activity in <code>conda-forge</code></li>
+<li class="fragment">consists on catching errors and suggesting &quot;best practices&quot;</li>
+</ul>
+</section>
+<section id="looking-under-the-hood" class="slide level1">
+<h1>Looking under the hood</h1>
+<ul>
+<li class="fragment"><code>conda-smithy</code> tool to lint, re-render, and create the feedstocks</li>
+<li class="fragment">heroku services to update the feedstocks (auto re-render)</li>
+<li class="fragment">and to pin the dependencies to a 'known' set versions</li>
+</ul>
+<aside class="notes">
+<p>There is a fair bit of automation in conda-forge</p>
+But we need more: improve the linter, recipe cleaner, auto updates
+</aside>
+</section>
+<section id="linter" class="slide level1">
+<h1>linter</h1>
+<figure>
+<img src="images/github_linter.png" />
+</figure>
+<pre class="shell"><code>conda smithy recipe-lint</code></pre>
+</section>
+<section id="conda-smihty-templates" class="slide level1">
+<h1>conda-smihty templates</h1>
+<pre class="jinja"><code>osx_image: xcode6.4
+{% block env -%}
+{% if matrix[0] or travis.secure -%}
+env:
+  {%- if matrix[0] %}
+  matrix:
+    {% for case in matrix %}
+    - {{ matrix_env(case) }}
+    {%- endfor %}
+  {%- endif %}</code></pre>
+</section>
+<section id="mnt-updating-a-feedstock" class="slide level1">
+<h1>MNT updating a feedstock</h1>
+<figure>
+<img src="images/github_rerender.png" />
+</figure>
+<aside class="notes">
+bot runs periodically and send a PR whenever there is a fundamental change in the template
+</aside>
+<pre class="shell"><code>conda smithy rerender</code></pre>
+</section>
+<section id="mnt-pinning-the-dependencies" class="slide level1">
+<h1>MNT pinning the dependencies</h1>
+<figure>
+<img src="images/pinning.png" />
+</figure>
+</section>
+<section id="pinning-bot" class="slide level1">
+<h1>Pinning bot</h1>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">pinned <span class="op">=</span> {
+          <span class="st">&#39;boost&#39;</span>: <span class="st">&#39;boost 1.64.*&#39;</span>,
+          <span class="st">&#39;bzip2&#39;</span>: <span class="st">&#39;bzip2 1.0.*&#39;</span>,
+          <span class="st">&#39;cairo&#39;</span>: <span class="st">&#39;cairo 1.14.*&#39;</span>,
+          <span class="st">&#39;ffmpeg&#39;</span>: <span class="st">&#39;ffmpeg 2.8.*&#39;</span>,
+          <span class="st">&#39;freetype&#39;</span>: <span class="st">&#39;freetype 2.7|2.7.*&#39;</span>,
+          <span class="st">&#39;geos&#39;</span>: <span class="st">&#39;geos 3.5.1&#39;</span>,
+          <span class="st">&#39;giflib&#39;</span>: <span class="st">&#39;giflib 5.1.*&#39;</span>,
+          ...
+        }</code></pre></div>
+<aside class="notes">
+pinning, compilers, and other infrastructure details are decided by the core members
+</aside>
+</section>
+<section id="who-are-the-core-members" class="slide level1">
+<h1>Who are the core members?</h1>
+<figure>
+<img src="images/core.png" />
+</figure>
+<aside class="notes">
+<p>the core meets hold by-weekly (open) meetings</p>
+<p>anyone can participate</p>
+the details are hosted on <code>hackpad</code> (moving to dropbox paper)
+</aside>
+</section>
+<section id="but-why-not-just-upload-wheels-for-dose-to-pypi" class="slide level1">
+<h1>But why not just upload wheels for dose to PyPI?</h1>
+<ul>
+<li class="fragment">PyPI is a first come first served publishing platform</li>
+<li class="fragment">One will need the authors permission to do that</li>
+<li class="fragment">Wheels can be built on GitHub using CIs but in a de-centralized way</li>
+<li class="fragment">Hard to share experience and take advantage of the community</li>
+<li class="fragment">The dream? Use conda-forge workflow to publish wheels on PyPI too</li>
+</ul>
+</section>
+<section id="want-to-know-more" class="slide level1">
+<h1>Want to know more?</h1>
+<ul>
+<li><a href="http://wesmckinney.com/blog/conda-forge-centos-moment/" class="uri">http://wesmckinney.com/blog/conda-forge-centos-moment/</a></li>
+<li><a href="https://www.continuum.io/blog/developer-blog/community-conda-forge" class="uri">https://www.continuum.io/blog/developer-blog/community-conda-forge</a></li>
+<li><a href="http://jakevdp.github.io/blog/2016/08/25/conda-myths-and-misconceptions/" class="uri">http://jakevdp.github.io/blog/2016/08/25/conda-myths-and-misconceptions/</a></li>
+<li><a href="https://talkpython.fm/episodes/show/94/guarenteed-packages-via-conda-and-conda-forge" class="uri">https://talkpython.fm/episodes/show/94/guarenteed-packages-via-conda-and-conda-forge</a></li>
+</ul>
+</section>
+<section id="aside-conda" class="slide level1">
+<h1>Aside: conda</h1>
+<ul>
+<li><code>conda</code> is a cross platform package manager (compare <code>conda</code> to <code>apt-get</code>/<code>yum</code>/<code>zypper</code> not <code>pip</code>)</li>
+<li>manage multiple sources of binaries: <code>numpy</code>+<code>atlas</code>, <code>numpy</code>+<code>openblas</code>, <code>numpy</code>+<code>mkl</code></li>
+<li>cannot install directly from source (can install Python)</li>
+<li>should not be used as a canonical source for Python packages</li>
+</ul>
+</section>
+<section id="aside-pip" class="slide level1">
+<h1>Aside: pip</h1>
+<ul>
+<li>will install into your system Python easily (but cannot install Python)</li>
+<li>can install packages directly from the source distribution</li>
+<li>cannot manage multiple sources of binaries: <code>numpy</code>+<code>openblas</code> built with <code>manylinux1</code></li>
+<li><code>pip</code> (and PyPI) <strong>is</strong> the canonical source for Python packages</li>
+</ul>
+</section>
+<section id="condapip" class="slide level1">
+<h1>conda+pip</h1>
+<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">name:</span><span class="at"> IOOS</span>
+<span class="fu">channels:</span><span class="at"> conda-forge</span>
+<span class="fu">dependencies:</span>
+  <span class="kw">-</span> jsanimation
+  <span class="kw">-</span> pynco
+  <span class="kw">-</span> emacs
+  <span class="kw">-</span> r-oce
+  <span class="kw">-</span> <span class="fu">pip:</span><span class="at"> dolfyn</span></code></pre></div>
+<div class="fragment">
+<pre class="shell"><code>conda env create environment.yml</code></pre>
+</div>
+</section>
+<section id="a-tale-of-two-packages" class="slide level1">
+<h1>A tale of <del>two</del> packages</h1>
+<h3 id="actually-only-one-with-two-hard-to-install-dependencies">(actually only one with two hard to install dependencies)</h3>
+<p><code>dose</code> install instructions:</p>
+<ul>
+<li class="fragment">Install <code>gtk</code> library and headers (dev/devel/etc)</li>
+<li class="fragment">Install <code>wxpython</code></li>
+<li class="fragment"><code>pip install dose</code></li>
+</ul>
+<div class="fragment">
+<p>Not easy for most users!</p>
+</div>
+</section>
+<section id="conda-forge-solution-for-dose" class="slide level1">
+<h1>conda-forge solution for dose?</h1>
+<ul>
+<li class="fragment">Same steps! But we need to do it only once.</li>
+<li class="fragment">The build steps (recipe) and the binary are shared on the cloud</li>
+<li class="fragment">Then anyone can just <code>conda install dose --channel conda-forge</code></li>
+</ul>
+</section>
+<section id="questions" class="slide level1">
+<h1>Questions ?</h1>
+<aside class="notes">
+<p>what if I cannot install binaries due to security reasons? Can I still use conda-forge somehow?</p>
+<p>trusting the binaries, is it any different then a source package on PyPI?</p>
+<p>conda-forge packages may contain patches</p>
+<p>no sign packages</p>
+<p>how hard is to build on all platforms? Depends on the package (cmake is always easier)</p>
+take advantage of the community. There is a lot of expertise on packaging there
+</aside>
+</section>
+    </div>
+  </div>
+
+  <script src="reveal.js/lib/js/head.min.js"></script>
+  <script src="reveal.js/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true },
+              { src: 'reveal.js/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>
