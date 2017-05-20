@@ -3,7 +3,7 @@
 
 Rendered versions:
 
-http://ocefpaf.github.io/ODM2_conda_channel_presentation/
+http://ocefpaf.github.io/talk_pycon2017
 
 Use the Makefile to create and manage the slides:
 
